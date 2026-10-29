@@ -3,19 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="A Blender-animated club dance video." />
     <title>Club Dance</title>
   </head>
   <body>
-    <header class="site-header">
-      <h1>Club Dance</h1>
-    </header>
-    <main>
-      <div class="player">
-        <video id="player" controls playsinline preload="metadata"></video>
-      </div>
-    </main>
+    <video id="player" autoplay muted loop playsinline preload="auto"></video>
+
+    <div id="sound-hint" class="sound-hint" hidden>Click anywhere for sound</div>
+
+    <button id="music-toggle" class="music-toggle" type="button" aria-label="Turn music on" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 18V5l12-2v13" />
+        <circle cx="6" cy="18" r="3" />
+        <circle cx="18" cy="16" r="3" />
+        <line class="slash" x1="3" y1="3" x2="21" y2="21" />
+      </svg>
+    </button>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
