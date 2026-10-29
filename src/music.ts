@@ -21,6 +21,9 @@ export function initMusic(): void {
   if (!toggle || !hint || TRACKS.length === 0) return
 
   const track = TRACKS[0]
+  // iOS 17+: play as media so the ringer/silent switch doesn't mute the music.
+  const nav = navigator as Navigator & { audioSession?: { type: string } }
+  if (nav.audioSession) nav.audioSession.type = 'playback'
   const ctx = new AudioContext()
   const output = ctx.createGain()
   output.connect(ctx.destination)
@@ -51,18 +54,21 @@ export function initMusic(): void {
     updateUi()
   })
 
-  // Sound blocked: start on the first click, tap or key press anywhere.
+  // Sound blocked: start on the first click, tap or key press anywhere. Only some events
+  // count as a user gesture that may unlock audio (a touch's pointerdown doesn't; its
+  // touchend/pointerup/click do), so listen to all of them until sound is running.
+  const UNLOCK_EVENTS = ['pointerup', 'touchend', 'click', 'keydown']
   const stopListening = () => {
-    document.removeEventListener('pointerdown', unlock)
-    document.removeEventListener('keydown', unlock)
+    for (const type of UNLOCK_EVENTS) document.removeEventListener(type, unlock)
   }
   const unlock = (e: Event) => {
     if (e.target instanceof Node && toggle.contains(e.target)) return
-    stopListening()
     if (!userPaused) ctx.resume()
   }
-  document.addEventListener('pointerdown', unlock)
-  document.addEventListener('keydown', unlock)
+  for (const type of UNLOCK_EVENTS) document.addEventListener(type, unlock)
+  ctx.addEventListener('statechange', () => {
+    if (ctx.state === 'running') stopListening()
+  })
 
   toggle.addEventListener('click', () => {
     stopListening()
