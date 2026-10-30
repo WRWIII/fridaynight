@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 
-// Served from https://wrwiii.github.io/club-dance-site/
+// Served from https://wrwiii.github.io/fridaynight/
 export default defineConfig({
-  base: '/club-dance-site/',
+  base: '/fridaynight/',
 })
