@@ -2,7 +2,7 @@
 
 A club dance video animated in Blender, presented on a small website.
 
-Live site: https://wrwiii.github.io/club-dance-site/
+Live site: https://wrwiii.github.io/fridaynight/
 
 ## Development
 
